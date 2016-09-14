@@ -1,0 +1,45 @@
+{
+  "name": "KnowledgeFinderII",
+  "version": "0.0.1",
+  "description": "",
+  "kewords": [
+    " "
+  ],
+  "private": true,
+  "author": "Anja Sonnenberg",
+  "contributors": [
+    "Efrain Lima Miranda",
+    "Anja Sonnenberg"
+  ],
+  "repository": {
+    "type": "svn",
+    "url": ""
+  },
+  "license": "TBD",
+  "engines": {
+    "node": ">=0.10.35"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "latest",
+    "grunt": "latest",
+    "grunt-continue": "latest",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-less": "^1.0.1",
+    "grunt-exec": "latest",
+    "grunt-karma": "latest",
+    "grunt-mocha-test": "latest",
+    "karma": "latest",
+    "karma-chai": "latest",
+    "karma-chrome-launcher": "latest",
+    "karma-coverage": "0.4.2",
+    "karma-firefox-launcher": "latest",
+    "karma-htmlfile-reporter": "latest",
+    "karma-junit-reporter": "latest",
+    "karma-mocha": "latest",
+    "karma-sinon": "^1.0.4",
+    "less": "^2.5.3",
+    "mocha": "latest",
+    "sinon": "^1.15.4"
+  }
+}

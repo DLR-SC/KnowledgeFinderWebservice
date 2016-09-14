@@ -1,0 +1,80 @@
+@opacity-link:              0.30;
+@hidden-opacity-link:       0.05;
+@hidden-opacity-node:       0.35;
+@hidden-opacity-node-text:  0.15;
+
+#graph-panel{
+  .panel-heading{
+    background-color: @background-color-secondary;
+  }
+}
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  font: 12px sans-serif;
+  background: #ddd;
+  border: 0;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0; //1e-06
+  margin: 3px;
+  padding: 8px;
+}
+
+.link {
+  stroke: @default-color;
+  stroke-opacity: @opacity-link;
+
+  &.fadeout {
+    stroke-opacity: @hidden-opacity-link;
+  }
+  &.fadeup, &:hover{
+    cursor: pointer;
+    stroke-opacity: 1;
+    stroke: @highlight-color;
+  }
+}
+
+.gnode {
+  &>circle {
+    stroke-width: 2;
+    stroke: @inverted-color;
+    fill: @secondary-color;
+  }
+
+  &>text {
+    fill: @default-color;
+    fill-opacity: 1;
+    font: 14px sans-serif;
+    stroke: @default-color;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    stroke-opacity: 1;
+    stroke-width: 0.5;
+  }
+
+  &.fadeout {
+    &>circle {
+      fill-opacity: @hidden-opacity-node;
+      stroke-opacity: @hidden-opacity-node;
+      opacity: @hidden-opacity-node;
+    }
+    &>text {
+      stroke-opacity: @hidden-opacity-node-text;
+      opacity: @hidden-opacity-node-text;
+    }
+  }
+
+  &.fadeup, &:hover{
+    cursor: pointer;
+
+    &>circle {
+      stroke: @highlight-color;
+    }
+    &>text {
+      font: 20px sans-serif;
+      fill: @highlight-color;
+    }
+  }
+}

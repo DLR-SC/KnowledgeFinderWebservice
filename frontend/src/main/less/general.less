@@ -1,0 +1,139 @@
+#knowledge-finder-2, #knowledge-finder-2-modal {
+
+  a:hover, a:focus, a:active {
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  em {
+    color: @highlight-color;
+    font-weight: bold;
+  }
+
+  form {
+    margin: 0;
+  }
+
+  label {
+    font-size: @font-size-base;
+    font-weight: normal;
+    color: @default-color;
+  }
+
+  .panel-heading {
+    cursor: context-menu;
+  }
+  .panel-title {
+    .panel-title(); //overwrite .aui .p
+    padding: 2px 0;
+    .glyphicon {
+      cursor: pointer;
+      &:hover, &:focus, &:active{
+        color: @inverted-color;
+      }
+    }
+  }
+  .btn {
+    .btn(); // overwrite .aui .btn
+    border: 1px solid rgb(221, 221, 221);
+  }
+
+  .badge {
+    .badge();
+    background-color: @secondary-color;
+  }
+
+  .glyphicon-plus {
+    display: none;
+  }
+
+  .glyphicon-minus {
+    display: inline;
+  }
+
+  .collapsed {
+    .glyphicon-plus {
+      display: inline;
+    }
+    .glyphicon-minus {
+      display: none;
+    }
+  }
+
+  &.modal{
+    .modal(); //overwrite .aui .modal
+    background-color: transparent;
+    margin-left: 0;
+    width: inherit;
+  }
+
+  .pagination {
+    .pagination();
+    margin: 0;
+    border-color: @highlight-background-color;
+    background-color: @background-color-primary;
+    &>.active>a {
+      background-color: @background-color-tertiary;
+      border-color: @background-color-tertiary;
+      &:hover, &:active, &:focus {
+        background-color: @highlight-background-color;
+        border-color: @highlight-background-color;
+      }
+    }
+    &>li>a{
+      padding: 2px 12px;
+      color: @default-color;
+      &:hover, &:active, &:focus {
+        background-color: @highlight-background-color;
+        border-color: @highlight-background-color;
+      }
+    }
+  }
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.load {
+  position: relative;
+
+  &.loaded {
+    .application-loader {
+      display: none !important;
+    }
+    .application-loader .loader {
+      display: none !important;
+    }
+  }
+
+  .application-loader {
+    background: rgba(246, 246, 246, 0.75) none;
+    border-radius: 3px;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+
+  .application-loader .loader {
+    background: transparent url('../img/d3loader.gif');
+    display: block;
+    height: 31px;
+    width: 31px;
+    left: 50%;
+    top: 50%;
+    margin: -15px 0 0 -15px;
+    position: absolute;
+  }
+}
+
+.nav-collapse {
+  display: inline;
+}

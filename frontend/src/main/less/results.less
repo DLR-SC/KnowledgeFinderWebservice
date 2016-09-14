@@ -1,0 +1,57 @@
+.result {
+  margin-bottom: 0;
+  margin-top: 0;
+  .panel-heading {
+    padding: 1px 8px;
+    .panel-title {
+      margin-right: 25px;
+      color: @text-color;
+      text-decoration: none;
+      //padding: 4px 0;
+      white-space: normal;
+      span {
+        padding-right: 3px;
+        font-size: @font-size-base;
+      }
+    }
+    .checkbox {
+      display: inline;
+      float: right;
+      margin-top: 2px;
+    }
+  }
+
+  &.highlight, &:hover {
+    margin: 0;
+    font-weight: normal;
+    background-color: @background-color-secondary;
+    .panel-heading {
+      background-color: @highlight-background-color;
+    }
+  }
+}
+
+#results {
+  margin: 5px 0 10px;
+}
+
+#resultPanel {
+  margin-bottom: 0;
+  #resultControls {
+    margin-bottom: 15px;
+  }
+  .stats{
+    margin-bottom: 15px;
+    font-size: 12px;
+  }
+  #select {
+    float: right;
+  }
+  #select-stats {
+    display: inline-block;
+  }
+  #button-deselect-all{
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+}

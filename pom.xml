@@ -30,9 +30,9 @@
 
 	<modules>
 		<module>webservice</module>
-		<module>${knowledgefinderII.path.prefix}instance-${knowledgefinderII.instance.name}/webservice-config</module>
+		<module>${knowledgefinderII.path.prefix}knowledgefinder-config-${knowledgefinderII.instance.name}/webservice-config</module>
 		<module>frontend</module>
-		<module>${knowledgefinderII.path.prefix}instance-${knowledgefinderII.instance.name}/frontend-config</module>
+		<module>${knowledgefinderII.path.prefix}knowledgefinder-config-${knowledgefinderII.instance.name}/frontend-config</module>
 	</modules>
 
 	<properties>

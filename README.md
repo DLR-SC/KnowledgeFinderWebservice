@@ -14,7 +14,6 @@ The Liferay portlet provides a user interface to access the webservice. It allow
 
 * [KnowledgeFinder Core](https://github.com/KnowledgeFinder/knowledgefinder-core)
 * [KnowledgeFinder Dataimport](https://github.com/KnowledgeFinder/knowledgefinder-dataimport)
-* [KnowledgeFinder Theme](https://github.com/KnowledgeFinder/knowledgefinder-theme)
 
 ## Documentation
 

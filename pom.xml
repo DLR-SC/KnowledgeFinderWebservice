@@ -31,8 +31,8 @@
 	<modules>
 		<module>webservice</module>
 		<module>${knowledgefinderII.path.prefix}knowledgefinder-config-${knowledgefinderII.instance.name}/webservice-config</module>
-		<module>frontend</module>
-		<module>${knowledgefinderII.path.prefix}knowledgefinder-config-${knowledgefinderII.instance.name}/frontend-config</module>
+		<module>portlet</module>
+		<module>${knowledgefinderII.path.prefix}knowledgefinder-config-${knowledgefinderII.instance.name}/portlet-config</module>
 	</modules>
 
 	<properties>

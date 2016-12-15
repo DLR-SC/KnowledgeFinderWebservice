@@ -26,17 +26,17 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.knowledgefinderII.webapp</groupId>
-	<artifactId>frontend</artifactId>
+	<artifactId>portlet</artifactId>
 	<packaging>war</packaging>
 	<name>KnowledgeFinderII Portlet</name>
 
 	<build>
-		<finalName>KnowledgeFinderFrontend</finalName>
+		<finalName>KnowledgeFinderPortlet</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-                      <finalName>KnowledgeFinderFrontend</finalName>                 
+                      <finalName>KnowledgeFinderPortlet</finalName>                 
                  </configuration>
 			</plugin>
 			<plugin>

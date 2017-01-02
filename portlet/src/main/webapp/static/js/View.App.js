@@ -124,7 +124,7 @@ View.prototype._init = function (resultListConfig, detailViewConfig, facetFilter
     self.subElements.graphPanel = new GraphPanel("#graph1", self.data.fieldsDict, self.data.facetsDataList);
     self.subElements.graphPanel.init();
     self.subElements.facetsFilterPanel = new FacetsFilterPanel("#selecttable", self.data.facetsDataList, self.data.fieldsDict, facetFilterConfig);
-    if (dateRangeFilterConfig)
+    if (dateRangeFilterConfig.field && dateRangeFilterConfig.title)
         self.subElements.dateRangeFilterPanel = new DateRangeFilterPanel("#range-filter", dateRangeFilterConfig);
     self.subElements.resultPanel = new ResultPanel("#resultPanel", self.data.fieldsDict, resultListConfig, exportTypes);
     self.subElements.detailView = new DetailView("knowledge-finder-2-modal", detailViewConfig);

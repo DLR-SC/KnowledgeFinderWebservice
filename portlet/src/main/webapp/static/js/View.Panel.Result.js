@@ -26,7 +26,8 @@ var ResultPanel = function (elementSelector, fieldDict, config, exportTypes) {
     };
     self._initSortSelector(config.sortOptions);
     self._initCollapseButtons();
-    self._initExportOptions(exportTypes);
+    if(exportTypes)
+    	self._initExportOptions(exportTypes);
 
     d3.select("#button-deselect-all").on("click", function () {
         d3.event.preventDefault();

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package de.dlr.knowledgefinderII.webapp.frontend.controller;
+package de.dlr.knowledgefinderII.webapp.portlet.controller;
 
 import java.io.InputStream;
 import java.net.URL;

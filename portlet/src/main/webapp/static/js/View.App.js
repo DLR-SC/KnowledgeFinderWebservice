@@ -417,7 +417,7 @@ View.prototype._drawDateRangeFilterPanel = function (filterQuery, field) {
 
     var queryUrl = new QueryUrl(baseUrl + "get-documents/")
         .setParameter(QueryUrl.params.query, "")
-        .setParameter(QueryUrl.params.filterQuery, "")
+        .setParameter(QueryUrl.params.filterQuery, field + ":[* TO *]") //filter all entries where field is empty
         .setParameter(QueryUrl.params.fields, field)
         .setParameter(QueryUrl.params.start, "0")
         .setParameter(QueryUrl.params.rows, "1")

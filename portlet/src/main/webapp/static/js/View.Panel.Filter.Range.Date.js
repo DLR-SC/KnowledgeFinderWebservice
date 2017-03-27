@@ -34,13 +34,11 @@ DateRangeFilterPanel.prototype.draw = function () {
                 var endDate = new Date(jsonMax.docs[0][self.data.field]);
 
                 if(!self.timeScale || self.timeScale.domain()[0].getTime() !== startDate.getTime() || self.timeScale.domain()[1].getTime() !== endDate.getTime()){
-                    console.log(startDate, endDate);
                     self.timeScale = d3.time.scale()
                         .domain([startDate, endDate]);
                     self.brush = d3.svg.brush()
                         .x(self.timeScale);
 
-                    console.log(self.data.initialValues);
                     if(self.data.initialValues)
                         self.brush.extent([self.isoFormat.parse(self.data.initialValues[0]), self.isoFormat.parse(self.data.initialValues[1])]);
                     else

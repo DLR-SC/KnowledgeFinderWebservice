@@ -17,3 +17,11 @@
 * Date range filter
 * Metadata graph
 * Export metadata
+
+# 1.0.1
+
+##
+
+### bug fixes
+
+* Date range filter query: filter all entries where field is empty

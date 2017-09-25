@@ -1,18 +1,3 @@
-/*******************************************************************************
- * Copyright 2016 DLR - German Aerospace Center
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package de.dlr.knowledgefinderII.webapp.webservice.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
@@ -30,7 +15,7 @@ import com.liferay.portal.service.InvokableService;
  * service are expected to have security checks based on the propagated JAAS
  * credentials because this service can be accessed remotely.
  *
- * 
+ * @author Efrain Lima Miranda, efrain.limamiranda@dlr.de
  * @see KnowledgeFinderServiceUtil
  * @see de.dlr.knowledgefinderII.webapp.webservice.service.base.KnowledgeFinderServiceBaseImpl
  * @see de.dlr.knowledgefinderII.webapp.webservice.service.impl.KnowledgeFinderServiceImpl
@@ -45,7 +30,7 @@ public interface KnowledgeFinderService extends BaseService, InvokableService {
     /*
      * NOTE FOR DEVELOPERS:
      *
-     * Never modify or reference this interface directly. Always use {@link KnowledgeFinderServiceUtil} to access the KnowledgeFinder Webservice remote service. Add custom service methods to {@link de.dlr.xps.server.knowledgefinder.webservice.service.impl.KnowledgeFinderServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+     * Never modify or reference this interface directly. Always use {@link KnowledgeFinderServiceUtil} to access the KnowledgeFinder Webservice remote service. Add custom service methods to {@link de.dlr.knowledgefinderII.webapp.webservice.service.impl.KnowledgeFinderServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
      */
 
     /**
@@ -91,13 +76,12 @@ public interface KnowledgeFinderService extends BaseService, InvokableService {
         java.lang.String groups, java.lang.String groupsAnyValue,
         java.lang.String limit)
         throws com.liferay.portal.kernel.exception.PortalException;
-    
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+
     public java.util.Map<java.lang.String, java.lang.Object> exportDocuments(
-        java.lang.String query, java.lang.String filterQuery, java.lang.String exportType)
+        java.lang.String query, java.lang.String filterQuery,
+        java.lang.String exportType)
         throws com.liferay.portal.kernel.exception.PortalException;
 
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.Map<java.lang.String, java.lang.Object> exportDocuments(
         java.lang.String query, java.lang.String filterQuery,
         java.lang.String fields, java.lang.String exportType)

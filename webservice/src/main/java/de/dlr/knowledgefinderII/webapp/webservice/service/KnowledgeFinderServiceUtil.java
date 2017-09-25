@@ -1,18 +1,3 @@
-/*******************************************************************************
- * Copyright 2016 DLR - German Aerospace Center
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package de.dlr.knowledgefinderII.webapp.webservice.service;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -27,7 +12,7 @@ import com.liferay.portal.service.InvokableService;
  * checks based on the propagated JAAS credentials because this service can be
  * accessed remotely.
  *
- * 
+ * @author Efrain Lima Miranda, efrain.limamiranda@dlr.de
  * @see KnowledgeFinderService
  * @see de.dlr.knowledgefinderII.webapp.webservice.service.base.KnowledgeFinderServiceBaseImpl
  * @see de.dlr.knowledgefinderII.webapp.webservice.service.impl.KnowledgeFinderServiceImpl
@@ -39,7 +24,7 @@ public class KnowledgeFinderServiceUtil {
     /*
      * NOTE FOR DEVELOPERS:
      *
-     * Never modify this class directly. Add custom service methods to {@link de.dlr.xps.server.knowledgefinder.webservice.service.impl.KnowledgeFinderServiceImpl} and rerun ServiceBuilder to regenerate this class.
+     * Never modify this class directly. Add custom service methods to {@link de.dlr.knowledgefinderII.webapp.webservice.service.impl.KnowledgeFinderServiceImpl} and rerun ServiceBuilder to regenerate this class.
      */
 
     /**
@@ -97,12 +82,13 @@ public class KnowledgeFinderServiceUtil {
         return getService()
                    .getNodes(query, filterQuery, groups, groupsAnyValue, limit);
     }
-    
+
     public static java.util.Map<java.lang.String, java.lang.Object> exportDocuments(
-            java.lang.String query, java.lang.String filterQuery, java.lang.String exportType)
-            throws com.liferay.portal.kernel.exception.PortalException {
-            return getService().exportDocuments(query, filterQuery, exportType);
-        }
+        java.lang.String query, java.lang.String filterQuery,
+        java.lang.String exportType)
+        throws com.liferay.portal.kernel.exception.PortalException {
+        return getService().exportDocuments(query, filterQuery, exportType);
+    }
 
     public static java.util.Map<java.lang.String, java.lang.Object> exportDocuments(
         java.lang.String query, java.lang.String filterQuery,

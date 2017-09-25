@@ -1,18 +1,3 @@
-/*******************************************************************************
- * Copyright 2016 DLR - German Aerospace Center
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package de.dlr.knowledgefinderII.webapp.webservice.service.base;
 
 import de.dlr.knowledgefinderII.webapp.webservice.service.KnowledgeFinderServiceUtil;
@@ -20,7 +5,7 @@ import de.dlr.knowledgefinderII.webapp.webservice.service.KnowledgeFinderService
 import java.util.Arrays;
 
 /**
- * 
+ * @author Efrain Lima Miranda, efrain.limamiranda@dlr.de
  * @generated
  */
 public class KnowledgeFinderServiceClpInvoker {
@@ -76,7 +61,7 @@ public class KnowledgeFinderServiceClpInvoker {
                 "java.lang.String", "java.lang.String", "java.lang.String",
                 "java.lang.String", "java.lang.String"
             };
-        
+
         _methodName23 = "exportDocuments";
 
         _methodParameterTypes23 = new String[] {
@@ -134,19 +119,18 @@ public class KnowledgeFinderServiceClpInvoker {
                 (java.lang.String) arguments[2],
                 (java.lang.String) arguments[3], (java.lang.String) arguments[4]);
         }
-        
+
         if (_methodName23.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes23, parameterTypes)) {
             return KnowledgeFinderServiceUtil.exportDocuments((java.lang.String) arguments[0],
-                (java.lang.String) arguments[1], (java.lang.String) arguments[1]);
+                (java.lang.String) arguments[1], (java.lang.String) arguments[2]);
         }
 
         if (_methodName24.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes24, parameterTypes)) {
             return KnowledgeFinderServiceUtil.exportDocuments((java.lang.String) arguments[0],
                 (java.lang.String) arguments[1],
-                (java.lang.String) arguments[2],
-                (java.lang.String) arguments[3]);
+                (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
         }
 
         throw new UnsupportedOperationException();

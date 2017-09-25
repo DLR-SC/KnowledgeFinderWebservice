@@ -1,18 +1,3 @@
-/*******************************************************************************
- * Copyright 2016 DLR - German Aerospace Center
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package de.dlr.knowledgefinderII.webapp.webservice.service;
 
 import com.liferay.portal.service.ServiceWrapper;
@@ -20,7 +5,7 @@ import com.liferay.portal.service.ServiceWrapper;
 /**
  * Provides a wrapper for {@link KnowledgeFinderService}.
  *
- * 
+ * @author Efrain Lima Miranda, efrain.limamiranda@dlr.de
  * @see KnowledgeFinderService
  * @generated
  */
@@ -95,12 +80,14 @@ public class KnowledgeFinderServiceWrapper implements KnowledgeFinderService,
         return _knowledgeFinderService.getNodes(query, filterQuery, groups,
             groupsAnyValue, limit);
     }
-    
+
     @Override
     public java.util.Map<java.lang.String, java.lang.Object> exportDocuments(
-        java.lang.String query, java.lang.String filterQuery, java.lang.String exportType)
+        java.lang.String query, java.lang.String filterQuery,
+        java.lang.String exportType)
         throws com.liferay.portal.kernel.exception.PortalException {
-        return _knowledgeFinderService.exportDocuments(query, filterQuery, exportType);
+        return _knowledgeFinderService.exportDocuments(query, filterQuery,
+            exportType);
     }
 
     @Override
@@ -108,8 +95,8 @@ public class KnowledgeFinderServiceWrapper implements KnowledgeFinderService,
         java.lang.String query, java.lang.String filterQuery,
         java.lang.String fields, java.lang.String exportType)
         throws com.liferay.portal.kernel.exception.PortalException {
-        return _knowledgeFinderService.exportDocuments(query, filterQuery, fields,
-        		exportType);
+        return _knowledgeFinderService.exportDocuments(query, filterQuery,
+            fields, exportType);
     }
 
     /**

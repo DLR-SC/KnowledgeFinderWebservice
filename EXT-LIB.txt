@@ -1,0 +1,22 @@
+External libraries
+------------------
+
+This software uses the following licenses for external libraries:
+
+Title: LGPL
+Version: 2.1
+URL: https://www.gnu.org/licenses/old-licenses/lgpl-2.1
+Used-by: Liferay. project home is at http://liferay.com
+Comments: -
+
+Title: Custom MIT-like
+Version: 
+URL: https://jquery.org/license/
+Used-by: jQuery. project home is at http://jquery.com
+Comments: -
+
+Title: BSD
+Version: 
+URL: https://opensource.org/licenses/BSD-3-Clause
+Used-by: d3. project home is at https://d3js.org
+Comments: -

@@ -18,5 +18,5 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-lazy="false" auto-import="false">
-	<import class="de.dlr.knowledgefinderII.webapp.webservice.model.KnowledgeFinder" />
+	<import class="de.dlr.knowledgefinder.webapp.webservice.model.KnowledgeFinder" />
 </hibernate-mapping>

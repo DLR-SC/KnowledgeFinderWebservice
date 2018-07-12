@@ -1,15 +1,18 @@
-var ResultPanel = function (elementSelector, fieldDict, config, exportTypes) {
+window.knowledgefinder = window.knowledgefinder || {};
+
+knowledgefinder.ResultPanel = function (elementSelector, fieldDict, config, exportTypes) {
     var self = this;
-    self.event = d3.dispatch("mouseover", "mouseout", "moreInfo", "goToPage", "sortBy", "download");
     self.data = {
-        url: null,
-        queryAllNodesUrl: null,
-        json: null,
-        fieldDict: fieldDict,
-        collapsed: true,
-        config: config,
+        docs: null,
+        numberDocs: null,
+        start: null,
+        rows: null,
         selectedEntries: []
     };
+    self.fieldDict = fieldDict;
+    self.config = config;
+    self.config.collapsed = true;
+
     if (!elementSelector)
         elementSelector = "body";
     self.element = d3.select(elementSelector);
@@ -24,54 +27,51 @@ var ResultPanel = function (elementSelector, fieldDict, config, exportTypes) {
         resultEntries: null,
         selectInfo: d3.select("#select-info")
     };
-    self._initSortSelector(config.sortOptions);
+    // events (mouseover, mouseout, moreInfo, goToPage, sortBy, download)
+    self.events = {};
+
+    self._initSortSelector(self.config.sortOptions);
     self._initCollapseButtons();
-    if(exportTypes)
-    	self._initExportOptions(exportTypes);
+    self._initExportOptions(exportTypes);
+};
 
-    d3.select("#button-deselect-all").on("click", function () {
-        d3.event.preventDefault();
-        self.data.selectedEntries = [];
-        self._drawTable();
-    });
+knowledgefinder.ResultPanel.prototype.addEventListener = function (type, handler) {
+    var self = this;
+    console.log("register event:", type);
+    if (self.events.hasOwnProperty(type))
+        self.events[type].push(handler);
+    else
+        self.events[type] = [handler];
 
-    if (!exportTypes || exportTypes.length === 0){
-        self.subElements.exportOptions.classed("hide", true);
-        d3.select("#select").classed("hide", true);
-        d3.select("#export-button").classed("hide", true);
+};
+
+knowledgefinder.ResultPanel.prototype.triggerEvent = function (eventName, event) {
+    var self = this;
+    if (self.events.hasOwnProperty(eventName)) {
+        self.events[eventName].forEach(function (handler) {
+            handler(event);
+        });
     }
-    return d3.rebind(self, self.event, "on");
 };
 
 //----------------------------------------------------------------------------------------------------------------------
 //  draw
 //----------------------------------------------------------------------------------------------------------------------
-ResultPanel.prototype.draw = function () {
+knowledgefinder.ResultPanel.prototype.draw = function (docs, numberDocs, start, rows, sortSelector) {
     var self = this;
-    self._displayLoading(true);
-    queue().defer(d3.json, self.data.url).await(
-        function (error, jsonR) {
-            self.data.json = jsonR;
-            console.log(jsonR);
-            self.data.json.docs.forEach(function (result) {
-                var urlQuery = new QueryUrl(self.data.queryAllNodesUrl);
-                urlQuery.setParameter(QueryUrl.params.filterQuery, "id:" + result.id);
-                urlQuery.setParameter(QueryUrl.params.query, "");
-                queue().defer(d3.json, urlQuery.data.url).await(
-                    function (error, nodes) {
-                        result.nodes = nodes;
-                    });
-            });
-            self._drawSortSelector();
-            self._drawPagination();
-            self._drawTable();
-            self._displayLoading(false);
-        });
+    self.data.docs = docs;
+    self.data.numberDocs = numberDocs;
+    self.data.start = start;
+    self.data.rows = rows;
+
+    self._drawSortSelector(sortSelector);
+    self._drawPagination();
+    self._drawTable();
 
     return self;
 };
 
-ResultPanel.prototype._displayLoading = function (value) {
+knowledgefinder.ResultPanel.prototype.displayLoading = function (value) {
     var self = this;
     self.element.select(".load").classed("loaded", !value);
 };
@@ -79,7 +79,7 @@ ResultPanel.prototype._displayLoading = function (value) {
 //----------------------------------------------------------------------------------------------------------------------
 //  sort selector
 //----------------------------------------------------------------------------------------------------------------------
-ResultPanel.prototype._initSortSelector = function (sortOptions) {
+knowledgefinder.ResultPanel.prototype._initSortSelector = function (sortOptions) {
     var self = this;
 
     self.subElements.sortSelector.selectAll("option").data(sortOptions)
@@ -94,18 +94,15 @@ ResultPanel.prototype._initSortSelector = function (sortOptions) {
 
     self.subElements.sortSelector.on("change", function () {
         d3.event.preventDefault();
-        self.event.sortBy(this.value);
+        self.triggerEvent("sortBy", this.value);
     });
 };
 
-ResultPanel.prototype._drawSortSelector = function () {
+knowledgefinder.ResultPanel.prototype._drawSortSelector = function (sortOption) {
     var self = this;
-    var queryUrl = new QueryUrl(self.data.url);
-    var selectedValue = queryUrl.getParameter(QueryUrl.params.sort);
-
     self.subElements.sortSelector.selectAll("option").each( //TODO easier without d3???
         function () {
-            if (this.value == selectedValue) {
+            if (this.value == sortOption) {
                 d3.select(this).attr("selected", "selected");
             } else {
                 d3.select(this).attr("selected", null);
@@ -116,36 +113,47 @@ ResultPanel.prototype._drawSortSelector = function () {
 //----------------------------------------------------------------------------------------------------------------------
 // export
 //----------------------------------------------------------------------------------------------------------------------
-ResultPanel.prototype._initExportOptions = function (exportTypes) {
+knowledgefinder.ResultPanel.prototype._initExportOptions = function (exportTypes) {
     var self = this;
-    var exportOption = self.subElements.exportOptions.selectAll("li").data(exportTypes)
-        .enter()
-        .append("li");
-    exportOption.append("a")
-        .attr("href", "#")
-        .text(function (d) {
-            return d + " (all)";
-        })
-        .on("click", function (d) {
-            d3.event.preventDefault();
-            self.event.download(d);
-        });
-    exportOption.append("a")
-        .attr("href", "#")
-        .text(function (d) {
-            return d + " (selected)";
-        })
-        .on("click", function (d) {
-            d3.event.preventDefault();
-            self.event.download(d, self.data.selectedEntries);
-        });
+    if (exportTypes) {
+        var exportOption = self.subElements.exportOptions.selectAll("li").data(exportTypes)
+            .enter()
+            .append("li");
+        exportOption.append("a")
+            .attr("href", "#")
+            .text(function (d) {
+                return d + " (all)";
+            })
+            .on("click", function (d) {
+                d3.event.preventDefault();
+                self.triggerEvent("download", {"exportType": d});
+            });
+        exportOption.append("a")
+            .attr("href", "#")
+            .text(function (d) {
+                return d + " (selected)";
+            })
+            .on("click", function (d) {
+                d3.event.preventDefault();
+                self.triggerEvent("download", {"exportType": d, "ids": self.data.selectedEntries});
+            });
 
+        d3.select("#button-deselect-all").on("click", function () {
+            d3.event.preventDefault();
+            self.data.selectedEntries = [];
+            self._drawTable();
+        });
+    } else if (!exportTypes || exportTypes.length === 0) {
+        self.subElements.exportOptions.classed("hide", true);
+        d3.select("#select").classed("hide", true);
+        d3.select("#export-button").classed("hide", true);
+    }
 };
 
 //----------------------------------------------------------------------------------------------------------------------
 //  expand/collapse results buttons
 //----------------------------------------------------------------------------------------------------------------------
-ResultPanel.prototype._initCollapseButtons = function () {
+knowledgefinder.ResultPanel.prototype._initCollapseButtons = function () {
     var self = this;
     self.setCollapsed(true);
     self.subElements.collapse.open.on("click", function () {
@@ -156,12 +164,12 @@ ResultPanel.prototype._initCollapseButtons = function () {
     });
 };
 
-ResultPanel.prototype.setCollapsed = function (value) {
+knowledgefinder.ResultPanel.prototype.setCollapsed = function (value) {
     var self = this;
 
     self.subElements.resultList.selectAll(".panel-title a").classed("collapsed", value);
     self.subElements.resultList.selectAll(".collapse").classed("in", !value);
-    self.data.collapsed = value;
+    self.config.collapsed = value;
     self.subElements.collapse.open.classed("hide", !value);
     self.subElements.collapse.close.classed("hide", value);
 };
@@ -169,7 +177,7 @@ ResultPanel.prototype.setCollapsed = function (value) {
 //----------------------------------------------------------------------------------------------------------------------
 //  result list
 //----------------------------------------------------------------------------------------------------------------------
-ResultPanel.prototype._drawTable = function () {
+knowledgefinder.ResultPanel.prototype._drawTable = function () {
     var self = this;
 
     // delete list and than redraw
@@ -177,7 +185,7 @@ ResultPanel.prototype._drawTable = function () {
     if (self.subElements.resultEntries)
         self.subElements.resultEntries.remove();
 
-    self.subElements.resultEntries = self.subElements.resultList.selectAll(".result").data(self.data.json.docs);
+    self.subElements.resultEntries = self.subElements.resultList.selectAll(".result").data(self.data.docs);
 
     var resultEntry = self.subElements.resultEntries.enter()
         .append("div")
@@ -186,16 +194,16 @@ ResultPanel.prototype._drawTable = function () {
             return "panel-" + d.id;
         })
         .on("mouseover", function (result) {
-            self.event.mouseover(self._extractIds(result.nodes));
+            self.triggerEvent("mouseover", self._extractIds(result.nodes));
         })
         .on("mouseout", function (result) {
-            self.event.mouseout(self._extractIds(result.nodes));
+            self.triggerEvent("mouseout", self._extractIds(result.nodes));
         });
 
     var resultHeading = resultEntry.append("div")
         .attr("class", "panel-heading");
 
-    if (!self.subElements.exportOptions.classed("hide")){
+    if (!self.subElements.exportOptions.classed("hide")) {
         resultHeading.append("div")
             .attr("class", "checkbox")
             .append("input")
@@ -242,20 +250,20 @@ ResultPanel.prototype._drawTable = function () {
         })
         .attr("class", "panel-body panel-collapse collapse");
 
-    for (var groupIndex = 0; groupIndex < self.data.config.body.length; groupIndex++) {
+    for (var groupIndex = 0; groupIndex < self.config.body.length; groupIndex++) {
         if (groupIndex)
             resultBody.append("hr");
-        for (var entryIndex = 0; entryIndex < self.data.config.body[groupIndex].length; entryIndex++) {
+        for (var entryIndex = 0; entryIndex < self.config.body[groupIndex].length; entryIndex++) {
             var entry = resultBody.append("div")
-                .attr("class", self.data.config.body[groupIndex][entryIndex].class);
+                .attr("class", self.config.body[groupIndex][entryIndex].class);
             entry.append("h4")
-                .text(self.data.config.body[groupIndex][entryIndex].title);
+                .text(self.config.body[groupIndex][entryIndex].title);
             entry.append("p")
                 .html(function (result) {
                     var maxTextLength = 300;
-                    if (!result[self.data.config.body[groupIndex][entryIndex].field])
+                    if (!result[self.config.body[groupIndex][entryIndex].field])
                         return "";
-                    var content = result[self.data.config.body[groupIndex][entryIndex].field];
+                    var content = result[self.config.body[groupIndex][entryIndex].field];
                     if (Array.isArray(content))
                         content = content.join(", ");
                     if (content.length > maxTextLength) {
@@ -275,16 +283,19 @@ ResultPanel.prototype._drawTable = function () {
         .text("More Information")
         .on("click", function (result) {
             d3.event.preventDefault();
-            return self.event.moreInfo(result.id);
+            return self.triggerEvent("moreInfo", result.id);
         });
 };
 
-ResultPanel.prototype._drawPagination = function () {
+//----------------------------------------------------------------------------------------------------------------------
+//  pagination
+//----------------------------------------------------------------------------------------------------------------------
+knowledgefinder.ResultPanel.prototype._drawPagination = function () {
     var self = this;
-    var urlquery = new QueryUrl(window.location.href);
-    var itemsTotal = self.data.json.numFound;
-    var currentStart = self.data.json.start;
-    var itemsPage = self.data.json.rows;
+    var urlquery = new knowledgefinder.Url(window.location.href);
+    var itemsTotal = self.data.numberDocs;
+    var currentStart = self.data.start;
+    var itemsPage = self.data.rows;
 
     var numPages = Math.ceil(itemsTotal / itemsPage);
     var firstItemOfLastPage = ((numPages - 1) * itemsPage);
@@ -307,12 +318,12 @@ ResultPanel.prototype._drawPagination = function () {
         pagination.append("li")
             .append("a")
             .attr("href", function () {
-                urlquery.setParameter(QueryUrl.params.start, previousPage);
+                urlquery.setParameter(knowledgefinder.Url.params.start, previousPage);
                 return urlquery.data.url;
             })
             .on("click", function () {
                 d3.event.preventDefault();
-                self.event.goToPage(previousPage);
+                self.triggerEvent("goToPage", previousPage);
             })
             .text("←");
     }
@@ -322,13 +333,12 @@ ResultPanel.prototype._drawPagination = function () {
         pagination.append("li")
             .append("a")
             .attr("href", function () {
-                urlquery.setParameter(QueryUrl.params.start, firstPage);
+                urlquery.setParameter(knowledgefinder.Url.params.start, firstPage);
                 return urlquery.data.url;
             })
             .on("click", function () {
-                console.log("here");
                 d3.event.preventDefault();
-                self.event.goToPage(firstPage);
+                self.triggerEvent("goToPage", firstPage);
             })
             .text("1");
     }
@@ -338,12 +348,12 @@ ResultPanel.prototype._drawPagination = function () {
         pagination.append("li")
             .append("a")
             .attr("href", function () {
-                urlquery.setParameter(QueryUrl.params.start, tenPagesPrevious);
+                urlquery.setParameter(knowledgefinder.Url.params.start, tenPagesPrevious);
                 return urlquery.data.url;
             })
             .on("click", function () {
                 d3.event.preventDefault();
-                self.event.goToPage(tenPagesPrevious);
+                self.triggerEvent("goToPage", tenPagesPrevious);
             })
             .text("...");
     }
@@ -354,12 +364,12 @@ ResultPanel.prototype._drawPagination = function () {
         })
         .append("a")
         .attr("href", function (d) {
-            urlquery.setParameter(QueryUrl.params.start, d);
+            urlquery.setParameter(knowledgefinder.Url.params.start, d);
             return urlquery.data.url;
         })
         .on("click", function (x) {
             d3.event.preventDefault();
-            self.event.goToPage(x);
+            self.triggerEvent("goToPage", x);
         })
         .text(function (d) {
             return Math.floor(d / itemsPage) + 1;
@@ -370,12 +380,12 @@ ResultPanel.prototype._drawPagination = function () {
         pagination.append("li")
             .append("a")
             .attr("href", function () {
-                urlquery.setParameter(QueryUrl.params.start, tenPagesNext);
+                urlquery.setParameter(knowledgefinder.Url.params.start, tenPagesNext);
                 return urlquery.data.url;
             })
             .on("click", function () {
                 d3.event.preventDefault();
-                self.event.goToPage(tenPagesNext);
+                self.triggerEvent("goToPage", tenPagesNext);
             })
             .text("...");
     }
@@ -385,13 +395,12 @@ ResultPanel.prototype._drawPagination = function () {
         pagination.append("li")
             .append("a")
             .attr("href", function () {
-                urlquery.setParameter(QueryUrl.params.start, lastPage);
+                urlquery.setParameter(knowledgefinder.Url.params.start, lastPage);
                 return urlquery.data.url;
             })
             .on("click", function () {
-                console.log("here");
                 d3.event.preventDefault();
-                self.event.goToPage(lastPage);
+                self.triggerEvent("goToPage", lastPage);
             })
             .text(numPages);
     }
@@ -401,18 +410,21 @@ ResultPanel.prototype._drawPagination = function () {
         pagination.append("li")
             .append("a")
             .attr("href", function () {
-                urlquery.setParameter(QueryUrl.params.start, x2);
+                urlquery.setParameter(knowledgefinder.Url.params.start, x2);
                 return urlquery.data.url;
             })
             .on("click", function () {
                 d3.event.preventDefault();
-                self.event.goToPage(x2);
+                self.triggerEvent("goToPage", x2);
             })
             .text("→");
     }
 };
 
-ResultPanel.prototype.setHighlight = function (idFilter, value) { //value == true | false
+//----------------------------------------------------------------------------------------------------------------------
+//  highlight
+//----------------------------------------------------------------------------------------------------------------------
+knowledgefinder.ResultPanel.prototype.setHighlight = function (idFilter, value) { //value == true | false
     var self = this;
     self.subElements.resultEntries.filter(
         function (result) {
@@ -424,7 +436,7 @@ ResultPanel.prototype.setHighlight = function (idFilter, value) { //value == tru
         .classed("highlight", value);
 };
 
-ResultPanel.prototype._extractIds = function (nodes) {
+knowledgefinder.ResultPanel.prototype._extractIds = function (nodes) {
     var self = this;
     var ids = [];
     for (var groupField in nodes) {
@@ -432,7 +444,7 @@ ResultPanel.prototype._extractIds = function (nodes) {
             var subGroupNodes = nodes[groupField];
             subGroupNodes.forEach(function (n) {
                 if (n.count > 0) {
-                    var id = self.data.fieldDict[groupField] + "_" + n.id;
+                    var id = self.fieldDict[groupField] + "_" + n.id;
                     ids.push(id);
                 }
             });
@@ -440,3 +452,5 @@ ResultPanel.prototype._extractIds = function (nodes) {
     }
     return ids;
 };
+
+//todo better handel private methods

@@ -18,8 +18,8 @@
 
 <portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" version="2.0">
 	<portlet>
-		<portlet-name>WebserviceLiferay</portlet-name>
-		<display-name>WebserviceLiferay</display-name>
+		<portlet-name>knowledgefinder-webservice-portlet</portlet-name>
+		<display-name>KnowledgeFinderWebservice</display-name>
 		<portlet-class>com.liferay.util.bridges.mvc.MVCPortlet</portlet-class>
 		<init-param>
 			<name>view-template</name>
@@ -30,8 +30,8 @@
 			<mime-type>text/html</mime-type>
 		</supports>
 		<portlet-info>
-			<title>WebserviceLiferay</title>
-			<short-title>WebserviceLiferay</short-title>
+			<title>KnowledgeFinderWebservice</title>
+			<short-title>KF Webservice</short-title>
 			<keywords>WebserviceLiferay</keywords>
 		</portlet-info>
 		<security-role-ref>

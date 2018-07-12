@@ -1,3 +1,7 @@
 /.project
 */target/*
 *.prefs
+portlet/node_modules/
+portlet/package-lock.json
+portlet/.idea
+portlet/*.iml

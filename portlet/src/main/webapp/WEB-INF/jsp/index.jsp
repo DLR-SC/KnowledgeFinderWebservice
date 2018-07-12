@@ -89,6 +89,8 @@
 </jsp:include>
 
 <script type="text/javascript">
+	// init module to contain app
+	window.knowledgefinder = {};
 	var baseUrl = '${baseUrl}';
 	var filterConfig = JSON.parse('${filterConfig}');
 	var detailViewConfig = JSON.parse('${detailViewConfig}');

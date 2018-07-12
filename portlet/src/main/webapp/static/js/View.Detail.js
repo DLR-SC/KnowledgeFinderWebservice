@@ -1,121 +1,127 @@
-var DetailView = function (elementId, configData) {
+window.knowledgefinder = window.knowledgefinder || {};
+
+knowledgefinder.DetailView = function (elementId, configData) {
     var self = this;
-    self.event = d3.dispatch("close");
-    self.data = {
-        url: null,
-        jsonData: null,
-        config: configData
-    };
+    self.config = configData;
     self.element = document.getElementById(elementId);
+    // events (close)
+    self.events = {};
 
-    $(self.element).on('hidden.bs.modal', self.event.close);
-    self._init();
-
-    return d3.rebind(self, self.event, "on");
-};
-
-DetailView.prototype.open = function () {
-    var self = this;
-
-    self.data.jsonData = {};
-    d3.json(self.data.url, function (error, json) {
-        if (error) {
-            console.error(error);
-            throw error;
-        }
-        if (json.docs.length > 0) {
-            self.data.jsonData = json.docs[0];
-            self._draw();
-            $(self.element).modal("show");
-        }
+    $(self.element).on('hidden.bs.modal', function () {
+        triggerEvent("close")
     });
-    return self;
-};
 
-DetailView.prototype._init = function () {
-    var self = this;
-    var container = d3.select(self.element).select("#modalBody");
-    for (var groupIndex = 0; groupIndex < self.data.config.body.length; groupIndex++) {
-        if (groupIndex)
-            container.append("hr");
+    init();
 
-        var entries = container.selectAll(".modal-content-entry")
-            .data(self.data.config.body[groupIndex], function (d) {
-                return d.field;
+    function triggerEvent(eventName, event) {
+        if (self.events.hasOwnProperty(eventName)) {
+            console.log("trigger event:", eventName);
+            self.events[eventName].forEach(function (handler) {
+                handler(event);
             });
+        }
+    }
 
-        var resultEntry = entries.enter()
-            .append("p")
-            .attr("class", "modal-content-entry");
-        resultEntry.append("strong")
-            .attr("title", function (d) {
-                return d.tooltip;
-            })
-            .text(function (d) {
-                return d.title;
-            });
-        resultEntry.append("span");
+    function init() {
+        var container = d3.select(self.element).select("#modalBody");
+        for (var groupIndex = 0; groupIndex < self.config.body.length; groupIndex++) {
+            if (groupIndex)
+                container.append("hr");
+
+            var entries = container.selectAll(".modal-content-entry")
+                .data(self.config.body[groupIndex], function (d) {
+                    return d.field;
+                });
+
+            var resultEntry = entries.enter()
+                .append("p")
+                .attr("class", "modal-content-entry");
+            resultEntry.append("strong")
+                .attr("title", function (d) {
+                    return d.tooltip;
+                })
+                .text(function (d) {
+                    return d.title;
+                });
+            resultEntry.append("span");
+        }
     }
 };
 
-DetailView.prototype._draw = function () {
+knowledgefinder.DetailView.prototype.addEventListener = function (type, handler) {
     var self = this;
-    console.log(self.data.jsonData);
+    console.log("register event:", type);
+    if (self.events.hasOwnProperty(type))
+        self.events[type].push(handler);
+    else
+        self.events[type] = [handler];
+};
 
+knowledgefinder.DetailView.prototype.open = function (query, doc) {
+    var self = this;
+
+    //------------------------------------------------------------------------------------------------------------------
+    // draw
+    //------------------------------------------------------------------------------------------------------------------
     // replace detail view title
-    self.element.querySelector("#modalTitle").innerHTML = self.data.jsonData[self.data.config.title.field];
+    self.element.querySelector("#modalTitle").innerHTML = doc[self.config.title.field];
 
     var container = d3.select(self.element).select("#modalBody");
 
     var entries = container.selectAll(".modal-content-entry")
         .classed("hide", false);
     entries
-        .select("span" )
+        .select("span")
         .html(function (d) {
-            if (self.data.jsonData[d.field]){
-            	if(d.type === "date")
-            		return ": " + new Date(self.data.jsonData[d.field]).toDateString();
-            	if(d.type === "link"){
-            		var getLink = function(link){
-            			if(link.indexOf("http") !== 0 && link.indexOf("www") !== 0)
-            				return link;
-           	   			return "<a href='" + link + "' target='_blank'>" + link + "</a>";
-           			};
-           			var links = self.data.jsonData[d.field];
-           			if(Array.isArray(links)){
-           	   			for(var linkIndex = 0; linkIndex < links.length; linkIndex++)
-           	   				links[linkIndex] = getLink(links[linkIndex]);
-           	   			return ": " + links.join(", ");
-           			}
-            		return ": " + getLink(links);
-            	}
-            	if(d.type === "localFile") {
-            		var link = self.data.jsonData[d.field];
-            		var url = (link.indexOf("http") !== 0 && link.indexOf("www") !== 0) ? "http://" + window.location.host + link : link;
-       	   			return ": <a href='" + url + "' target='_blank'>download</a>";
-            	}
-            	if(Array.isArray(self.data.jsonData[d.field]))
-            		return ": " + self.data.jsonData[d.field].join(", ");
-            	return ": " + self.data.jsonData[d.field];
+            if (doc[d.field]) {
+                if (d.type === "date")
+                    return ": " + new Date(doc[d.field]).toDateString();
+                if (d.type === "link") {
+                    var getLink = function (link) {
+                        if (link.indexOf("http") !== 0 && link.indexOf("www") !== 0)
+                            return link;
+                        return "<a href='" + link + "' target='_blank'>" + link + "</a>";
+                    };
+                    var links = doc[d.field];
+                    if (Array.isArray(links)) {
+                        for (var linkIndex = 0; linkIndex < links.length; linkIndex++)
+                            links[linkIndex] = getLink(links[linkIndex]);
+                        return ": " + links.join(", ");
+                    }
+                    return ": " + getLink(links);
+                }
+                if (d.type === "localFile") {
+                    var link = doc[d.field];
+                    var url = (link.indexOf("http") !== 0 && link.indexOf("www") !== 0) ? "http://" + window.location.host + link : link;
+                    return ": <a href='" + url + "' target='_blank'>download</a>";
+                }
+                if (Array.isArray(doc[d.field]))
+                    return ": " + doc[d.field].join(", ");
+                return ": " + doc[d.field];
             }
             return ": -";
         });
-    
+
     entries
         .filter(function (d) {
-            return (d.hideIfNotSet && !self.data.jsonData[d.field]);
+            return (d.hideIfNotSet && !doc[d.field]);
         })
         .classed("hide", true);
 
     // this works only as log as the document content (original source)
     // remains the only searchable field not displayed in the modal!
-    if (!self.element.querySelector("em") && self.data.url.indexOf("query=&") === -1) {
+    if (!self.element.querySelector("em") && query) { //todo test query
         container.insert("p", ":first-child")
             .append("em")
             .text("Note: Your search term was found in the original source!");
     } else {
-    	var firstChild = container.select("p");
-    	if(!firstChild.classed("modal-content-entry"))
-    		firstChild.remove();
+        var firstChild = container.select("p");
+        if (!firstChild.classed("modal-content-entry"))
+            firstChild.remove();
     }
+    //------------------------------------------------------------------------------------------------------------------
+    // display
+    //------------------------------------------------------------------------------------------------------------------
+    $(self.element).modal("show");
+    return self;
 };

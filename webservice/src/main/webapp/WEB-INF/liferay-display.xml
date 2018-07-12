@@ -19,6 +19,6 @@
 
 <display>
 	<category name="category.sample">
-		<portlet id="WebserviceLiferay" />
+		<portlet id="knowledgefinder-webservice-portlet" />
 	</category>
 </display>

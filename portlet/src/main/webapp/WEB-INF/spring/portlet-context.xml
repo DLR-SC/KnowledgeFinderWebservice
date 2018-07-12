@@ -30,7 +30,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
         
 	<context:annotation-config />
-	<context:component-scan base-package="de.dlr.knowledgefinderII.webapp.portlet.controller" />
+	<context:component-scan base-package="de.dlr.knowledgefinder.webapp.portlet.controller" />
 	<!-- the mvc resources tag does the magic -->
 	<!--   <mvc:resources mapping="/static/**" location="/static/" /> -->
 

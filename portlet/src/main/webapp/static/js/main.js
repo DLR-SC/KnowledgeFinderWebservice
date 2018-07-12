@@ -5,11 +5,10 @@
  *
  */
 
-(function ($) {
-    var view = new View();
+(function ($, context) {
     $(window)
         .ready(function () {
-            view.draw();
+            context.pageManager.updatePage(context.pageManager.getCurrentStateUrl());
         })
         .load(function () {
             $(".scroll").mCustomScrollbar({
@@ -26,11 +25,10 @@
         })
         .on("resize", function () {
             $('#modalBody').css('max-height', $(window).height() - 180);
-            view.subElements.graphPanel.init();
-            view.event.load(view.data.url, true);
+            context.pageManager.updatePage(context.pageManager.getCurrentStateUrl(), true);
         })
         .bind("popstate", function () {
-            view.event.load(location.toString());
+            context.pageManager.updatePage(location.toString());
         });
 
-})(jQuery);
+})(jQuery, window.knowledgefinder = window.knowledgefinder || {});

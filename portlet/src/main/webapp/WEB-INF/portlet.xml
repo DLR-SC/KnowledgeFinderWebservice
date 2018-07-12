@@ -23,7 +23,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
 	<portlet>
 		<portlet-name>knowledgefinder-portlet</portlet-name>
-		<display-name>knowledgefinder-portlet</display-name>
+		<display-name>KnowledgeFinderPortlet</display-name>
 		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
 		<init-param>
 			<name>contextConfigLocation</name>
@@ -35,9 +35,9 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>Knowledgefinder Portlet</title>
-			<short-title>Knowledgefinder Liferay Portlet</short-title>
-			<keywords>Liferay String Knowledgefinder Portlet</keywords>
+			<title>KnowledgeFinderPortlet</title>
+			<short-title>KF Portlet</short-title>
+			<keywords>KnowledgeFinder</keywords>
 		</portlet-info>
 		<security-role-ref>
 			<role-name>administrator</role-name>

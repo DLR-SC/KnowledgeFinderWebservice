@@ -45,15 +45,15 @@
 		<header-portlet-javascript>/static/js/lib/history/html5/native.history.js</header-portlet-javascript>
 		
 		<!-- JS FOOTER -->
-		<footer-portlet-javascript>/static/js/utils.js</footer-portlet-javascript>
-		<footer-portlet-javascript>/static/js/QueryUrl.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/static/js/urlManager.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/static/js/connector.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/static/js/View.Panel.Graph.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/static/js/View.Panel.Filter.Factes.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/static/js/View.Panel.Filter.Range.Date.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/static/js/View.Panel.Result.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/static/js/View.Detail.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/static/js/View.Panel.Selection.js</footer-portlet-javascript>
-		<footer-portlet-javascript>/static/js/View.App.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/static/js/pageManager.js</footer-portlet-javascript>
 		
 		<footer-portlet-javascript>/static/js/main.js</footer-portlet-javascript>
 	</portlet>

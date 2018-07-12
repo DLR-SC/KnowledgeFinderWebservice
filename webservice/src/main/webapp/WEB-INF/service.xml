@@ -15,12 +15,12 @@
  -->
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
 
-<service-builder package-path="de.dlr.knowledgefinderII.webapp.webservice">
+<service-builder package-path="de.dlr.knowledgefinder.webapp.webservice">
 	<author>Efrain Lima Miranda, efrain.limamiranda@dlr.de</author>
-	<namespace>KnowledgeWebservice</namespace>
+	<namespace>KnowledgeFinderWebservice-portlet</namespace>
 
-	<entity name="KnowledgeFinder" remote-service="true" local-service="false"
-		human-name="KnowledgeFinder Webservice">
+	<entity name="knowledgefinder-webservice-portlet" remote-service="true" local-service="false"
+		human-name="KnowledgeFinderWebservice">
 
 	</entity>
 </service-builder>
